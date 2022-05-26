@@ -28,8 +28,14 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: [{ loader: 'ts-loader' }],
+      },
+      {
         // 拡張子 .js の場合
         test: /\.js$/,
+        exclude: /node_modules/,
         use: [
           {
             // Babel を利用する
@@ -106,4 +112,8 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
   ],
+  resolve: {
+    // 拡張子を配列で指定
+    extensions: ['.ts', '.js'],
+  },
 };
