@@ -11,15 +11,19 @@ const enabledSourceMap = MODE === 'development';
 
 module.exports = {
   mode: MODE,
-  // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: `./src/javascripts/index.js`,
+  entry: {
+    app: './src/app.js',
+    common: './src/scss/common.scss',
+    movie: './src/movie-pick-up/main.js',
+    hangmanGame: './src/hangman-game/main.js',
+  },
 
   // ファイルの出力設定
   output: {
     //  出力ファイルのディレクトリ名
     path: `${__dirname}/dist`,
     // 出力ファイル名
-    filename: 'javascripts/main.js',
+    filename: './javascripts/[name].js',
   },
   devServer: {
     static: 'dist',
@@ -104,11 +108,22 @@ module.exports = {
   target: ['web', 'es5'],
   plugins: [
     new MiniCssExtractPlugin({
-      filename: './css/main.css',
+      filename: './css/[name].css',
     }),
     new HTMLWebpackPlugin({
-      filename: './index.html',
       template: './src/templates/index.ejs',
+      filename: './index.html',
+      chunks: ['common'],
+    }),
+    new HTMLWebpackPlugin({
+      template: './src/movie-pick-up/index.ejs',
+      filename: './movie-pick-up/index.html',
+      chunks: ['common', 'movie'],
+    }),
+    new HTMLWebpackPlugin({
+      template: './src/hangman-game/index.ejs',
+      filename: './hangman-game/index.html',
+      chunks: ['common', 'hangmanGame'],
     }),
     new CleanWebpackPlugin(),
   ],
